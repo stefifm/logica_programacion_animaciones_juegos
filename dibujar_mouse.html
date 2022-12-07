@@ -1,0 +1,106 @@
+<canvas width="600" height="400"></canvas>
+
+<script>
+  const pantalla = document.querySelector('canvas');
+  const pincel = pantalla.getContext('2d');
+  const colores = ['red', 'green', 'blue']
+  let indice = 0
+
+  pincel.fillStyle = 'grey';
+  pincel.fillRect(0, 0, 600, 400);
+
+  let puedoDibujar = false;
+
+  let colorActual = 'blue'
+
+  const tamanhoCuadrado = 50
+  const yCuadrado = 0
+
+  function dibujarCirculo(x, y, colorActual) {
+
+
+    if (puedoDibujar) {
+      pincel.fillStyle = colorActual;
+      pincel.beginPath();
+      pincel.arc(x, y, 5, 0, 2 * 3.14);
+      pincel.fill();
+    }
+
+  }
+
+
+  function areaDibujo(xNum, yNum) {
+
+    if ((xNum >= 0) &&
+      (xNum <= ((tamanhoCuadrado * 3) + 5)) &&
+      (yNum >= yCuadrado) &&
+      (yNum <= (tamanhoCuadrado + 5))) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  function capturarMouse(evento) {
+    const x = evento.pageX - pantalla.offsetLeft;
+    const y = evento.pageY - pantalla.offsetTop;
+
+    if (areaDibujo(x, y)) {
+      dibujarCirculo(x, y, colorActual)
+    }
+
+  }
+
+
+  function habilitarDibujar() {
+
+    puedoDibujar = true;
+  }
+
+  function deshabilitarDibujar() {
+
+    puedoDibujar = false;
+  }
+
+  function dibujarCuadrado(x, y, tamanho, color) {
+    pincel.fillStyle = color;
+    pincel.beginPath();
+    pincel.fillRect(x, y, tamanho, tamanho)
+  }
+
+
+
+  function dibujarPaleta(y, colores, tamanho) {
+    for (let x = 0; x < (tamanho * 3); x = x + tamanho) {
+      dibujarCuadrado(x, y, tamanho, colores[indice])
+      indice++
+    }
+  }
+
+
+  function seleccionarColor(evento) {
+    const x = evento.pageX - pantalla.offsetLeft;
+    const y = evento.pageY - pantalla.offsetTop;
+
+    if (y > yCuadrado && y < (yCuadrado + tamanhoCuadrado)) {
+      if (x > 0 && x < (0 + tamanhoCuadrado)) {
+        colorActual = colores[0]
+
+      } else if (x > 50 && x < (50 + tamanhoCuadrado)) {
+        colorActual = colores[1]
+
+      } else if (x > 100 && x < (100 + tamanhoCuadrado)) {
+        colorActual = colores[2]
+      }
+    }
+  }
+
+  pantalla.onmousemove = capturarMouse;
+  dibujarPaleta(yCuadrado, colores, tamanhoCuadrado)
+
+  pantalla.onmousedown = habilitarDibujar;
+
+  pantalla.onmouseup = deshabilitarDibujar;
+  pantalla.onclick = seleccionarColor
+
+</script>

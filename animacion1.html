@@ -1,0 +1,39 @@
+<meta charset="UTF-8">
+
+<canvas width="600" height="400">
+
+</canvas>
+
+<script>
+  const pantalla = document.querySelector('canvas');
+  const pincel = pantalla.getContext('2d');
+
+  pincel.fillStyle = 'lightgrey';
+  pincel.fillRect(0, 0, 600, 400);
+
+  function disenharCirculo(x, y, radio) {
+    pincel.fillStyle = 'red';
+    pincel.beginPath();
+    pincel.arc(x, y, radio, 0, 2 * Math.PI);
+    pincel.fill();
+  }
+
+  function limpiarPantalla() {
+
+    pincel.clearRect(0, 0, 600, 400)
+  }
+
+  let x = 0
+  function actualizarPantalla() {
+
+    limpiarPantalla()
+
+    disenharCirculo(x, 20, 10)
+
+    x++
+  }
+
+  setInterval(actualizarPantalla, 5)
+
+
+</script>
